@@ -1,0 +1,133 @@
+package com.ct.image.imageasyncloader.impl;
+
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.ct.image.imageasyncloader.i.IImageTask;
+import com.ct.image.imageasyncloader.view.CustomImageView;
+
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * Created by tao.chen1 on 2015/1/15.
+ */
+public abstract class ImageTask implements IImageTask{
+
+    protected BitmapDrawable result = null;
+
+    protected CopyOnWriteArrayList<CustomImageView> mImageViewList = new CopyOnWriteArrayList<>();
+
+    private UIHandler mUIHandler = new UIHandler();
+
+    private TaskFinishedListener mFinishedListener = null;
+
+    public void setFinishedListener(TaskFinishedListener mFinishedListener) {
+        this.mFinishedListener = mFinishedListener;
+    }
+
+    @Override
+    public String getKey() {
+        return null;
+    }
+
+    public void addImageView(CustomImageView imageView) {
+        mImageViewList.add(imageView);
+    }
+
+    public void removeImageView(CustomImageView imageView) {
+        mImageViewList.remove(imageView);
+        if (mImageViewList.size() == 0) {
+            mFinishedListener.onInterrupted(getKey());
+        }
+    }
+
+    @Override
+    public void run() {
+        long startTime = System.currentTimeMillis();
+        boolean isLoaded = doLoadFromCache();
+        if (!isLoaded) {
+            doInBackground();
+        }
+        long costTime = System.currentTimeMillis() - startTime;
+        Log.e("fuck", "tid:" + Thread.currentThread().getId() + "---run time:" + costTime);
+    }
+
+    public abstract void doInBackground();
+
+    /**
+     * try get image from cache
+     * @return true if bingo
+     */
+    protected boolean doLoadFromCache() {
+        String key = getKey();
+        if (!TextUtils.isEmpty(key)) {
+            result = ImageCache.getsInstance().get(key);
+        }
+        return result != null;
+    }
+
+    protected void onFinished() {
+        if (mUIHandler != null) {
+            Message msg = mUIHandler.obtainMessage(WHAT_TASK_DONE);
+            msg.obj = this;
+            mUIHandler.sendMessage(msg);
+        }
+    }
+
+    public void doFinished() {
+        if (mImageViewList != null && mImageViewList.size() > 0) {
+            for(CustomImageView view : mImageViewList) {
+                view.setImageDrawable(result);
+            }
+        }
+        //clear result's ref after task done
+        result = null;
+        //callback to remove task in ImageLoader
+        if (mFinishedListener != null) {
+            mFinishedListener.onFinished(getKey());
+        }
+    }
+
+    public void onError() {
+        //TODO set error image the imageView's default image
+    }
+
+    public static final int WHAT_TASK_DONE = 1;
+    private static class UIHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            ImageTask task = (ImageTask) msg.obj;
+            switch (msg.what) {
+                case WHAT_TASK_DONE:
+                    task.doFinished();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public interface TaskFinishedListener {
+        public void onFinished(String key);
+        public void onInterrupted(String key);
+    }
+
+    public boolean equalsClazAndKey(ImageTask task) {
+        if (task != null) {
+            String mClass = this.getClass().getName();
+            String cClass = task.getClass().getName();
+            if (mClass.equals(cClass)) {
+                String mKey = getKey();
+                String cKey = task.getKey();
+                if (!TextUtils.isEmpty(mKey) && mKey.equals(cKey)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+}
