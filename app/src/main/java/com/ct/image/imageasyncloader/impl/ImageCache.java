@@ -5,13 +5,13 @@ import android.support.v4.util.LruCache;
 import android.util.Log;
 
 import com.ct.image.imageasyncloader.i.IImageCache;
+import com.ct.image.imageasyncloader.other.Config;
 import com.ct.image.imageasyncloader.other.ImageUtils;
 import com.ct.image.imageasyncloader.other.RecyclableBitmapDrawable;
 
-/**
- * Created by tao.chen1 on 2015/1/15.
- */
 public class ImageCache implements IImageCache {
+    private static final String TAG = "ImageCache";
+    private static final boolean DEBUG = Config.DEBUG;
 
     private LruCache<String, BitmapDrawable> mMemoryCache;
     private static volatile ImageCache sInstance = null;
@@ -38,7 +38,9 @@ public class ImageCache implements IImageCache {
      */
     public static ImageCache getsInstance(){
         int size = Math.round(0.2f * Runtime.getRuntime().maxMemory() / 1024);
-        Log.e("fuck", Runtime.getRuntime().maxMemory() / 1024 / 1024 + "");
+        if (DEBUG) {
+            Log.e(TAG, Runtime.getRuntime().maxMemory() / 1024 / 1024 + "");
+        }
         return getInstance(size);
     }
 

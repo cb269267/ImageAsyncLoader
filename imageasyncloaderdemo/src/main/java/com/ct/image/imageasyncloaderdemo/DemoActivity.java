@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 
 public class DemoActivity extends ActionBarActivity {
+    private static final String TAG = "DemoActivity";
 
     private ListView mLvTest = null;
     private ArrayList<String> mListData = new ArrayList<>();
@@ -83,7 +84,7 @@ public class DemoActivity extends ActionBarActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             long startTime = System.currentTimeMillis();
-            ViewHolder holder = null;
+            ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(DemoActivity.this);
@@ -111,7 +112,7 @@ public class DemoActivity extends ActionBarActivity {
             holder.imageView.loadImage();
             holder.textView.setText(position + ": text information is showing here!");
             long costTime = System.currentTimeMillis() - startTime;
-            Log.e("fuck", "tid:" + Thread.currentThread().getId() + "getView time:" + costTime);
+            Log.e(TAG, "tid:" + Thread.currentThread().getId() + "getView time:" + costTime);
             return convertView;
         }
     }
