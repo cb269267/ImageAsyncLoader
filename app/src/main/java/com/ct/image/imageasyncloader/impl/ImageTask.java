@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.ct.image.imageasyncloader.i.IImageTask;
+import com.ct.image.imageasyncloader.other.Config;
 import com.ct.image.imageasyncloader.view.CustomImageView;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,6 +16,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by tao.chen1 on 2015/1/15.
  */
 public abstract class ImageTask implements IImageTask{
+
+    private static final String TAG = "ImageTask";
+    private static final Boolean DEBUG = Config.DEBUG;
 
     protected BitmapDrawable result = null;
 
@@ -52,7 +56,9 @@ public abstract class ImageTask implements IImageTask{
             doInBackground();
         }
         long costTime = System.currentTimeMillis() - startTime;
-        Log.e("fuck", "tid:" + Thread.currentThread().getId() + "---run time:" + costTime);
+        if (DEBUG) {
+            Log.e(TAG, "tid:" + Thread.currentThread().getId() + "---run time:" + costTime);
+        }
     }
 
     public abstract void doInBackground();
@@ -69,7 +75,8 @@ public abstract class ImageTask implements IImageTask{
         return result != null;
     }
 
-    protected void onFinished() {
+    @Override
+    public void onFinished() {
         if (mUIHandler != null) {
             Message msg = mUIHandler.obtainMessage(WHAT_TASK_DONE);
             msg.obj = this;
@@ -91,6 +98,7 @@ public abstract class ImageTask implements IImageTask{
         }
     }
 
+    @Override
     public void onError() {
         //TODO set error image the imageView's default image
     }

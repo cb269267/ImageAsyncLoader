@@ -5,4 +5,6 @@ package com.ct.image.imageasyncloader.i;
  */
 public interface IImageTask extends Runnable{
     public String getKey();
+    public void onFinished();
+    public void onError();
 }
