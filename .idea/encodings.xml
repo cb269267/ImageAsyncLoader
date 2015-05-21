@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/core/ImageLoader.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/core/ImageTaskExecutor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/core/ImageTaskOrder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/i/IFileCacheManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/i/IImageCache.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/i/IImageTask.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/i/LoadImageCallback.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/impl/CustomFileCacheManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/impl/DownloadImageTask.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/impl/ImageCache.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/impl/ImageTask.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/impl/LoadImageTask.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/other/Config.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/other/ImageUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/other/RecyclableBitmapDrawable.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/other/Utils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/view/AlbumImageView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/view/CropImageView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/view/CustomImageView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/ct/image/imageasyncloader/view/FloatDrawable.java" charset="UTF-8" />
+  </component>
 </project>
-
