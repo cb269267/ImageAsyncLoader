@@ -1,6 +1,5 @@
 package com.ct.image.imageasyncloader.core;
 
-import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -12,7 +11,9 @@ import com.ct.image.imageasyncloader.view.CustomImageView;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by tao.chen1 on 2015/1/15.
+ * ImageLoader
+ *
+ * @author tao.chen1
  */
 public class ImageLoader {
 
@@ -22,14 +23,14 @@ public class ImageLoader {
 
     private RequestQueue mRequestQueue = null;
 
-    private ImageLoader(){
+    private ImageLoader() {
         mWorkingTaskList = new ConcurrentHashMap<>();
     }
 
-    public static ImageLoader getInstance(){
+    public static ImageLoader getInstance() {
         if (sInstance == null) {
             synchronized (ImageLoader.class) {
-                if(sInstance == null) {
+                if (sInstance == null) {
                     sInstance = new ImageLoader();
                 }
             }
@@ -48,7 +49,7 @@ public class ImageLoader {
         return mRequestQueue;
     }
 
-    public void addImageTask(ImageTask task, CustomImageView imageView){
+    public void addImageTask(ImageTask task, CustomImageView imageView) {
         if (mWorkingTaskList != null) {
             mWorkingTaskList = new ConcurrentHashMap<>();
         }

@@ -6,21 +6,27 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
-import com.android.volley.toolbox.Volley;
 import com.ct.image.imageasyncloader.core.ImageLoader;
+import com.ct.image.imageasyncloader.i.IFileCacheManager;
+import com.ct.image.imageasyncloader.impl.CustomFileCacheManager;
 import com.ct.image.imageasyncloader.impl.DownloadImageTask;
 import com.ct.image.imageasyncloader.impl.ImageTask;
 import com.ct.image.imageasyncloader.impl.LoadImageTask;
+import com.ct.image.imageasyncloader.other.Config;
 import com.ct.image.imageasyncloader.other.RecyclableBitmapDrawable;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import java.io.File;
 
 /**
- * Created by tao.chen1 on 2015/1/15.
+ * CustomImageView
+ *
+ * @author tao.chen1
  */
 public class CustomImageView extends ImageView {
+    private static final String TAG = "CustomImageView";
 
     private String mImageUrl = null;
 
@@ -28,21 +34,42 @@ public class CustomImageView extends ImageView {
 
     private ImageTask mCurrentTask = null;
 
+    private IFileCacheManager mFileCacheManager = null;
+
     public CustomImageView(Context context) {
         super(context);
+        init();
     }
 
     public CustomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public CustomImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CustomImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    private void init(){
+        mFileCacheManager = new CustomFileCacheManager(CustomFileCacheManager.TYPE_POSTS_CONTENT);
+    }
+
+    /**
+     * @param type TYPE in {@link com.ct.image.imageasyncloader.impl.CustomFileCacheManager}
+     */
+    public void setFileCacheManagerType(int type){
+        if (mFileCacheManager != null) {
+            mFileCacheManager = new CustomFileCacheManager(type);
+        } else {
+            ((CustomFileCacheManager) mFileCacheManager).setType(type);
+        }
     }
 
     @Override
@@ -69,9 +96,25 @@ public class CustomImageView extends ImageView {
             LoadImageTask task = new LoadImageTask(mImagePath);
             ImageLoader.getInstance().addImageTask(task, this);
         } else if (!TextUtils.isEmpty(mImageUrl)) {
-            //load image on the internet
-            DownloadImageTask task = new DownloadImageTask(mImageUrl, ImageLoader.getInstance().getRequestQueue(getContext()));
-            ImageLoader.getInstance().addImageTask(task, this);
+            String imgFilePath = mFileCacheManager.convertUrlToFilePath(mImageUrl);
+            if (!TextUtils.isEmpty(imgFilePath)){
+                File imgFile = new File(imgFilePath);
+                if (imgFile.exists()){
+                    //load image from file
+                    LoadImageTask task = new LoadImageTask(imgFilePath);
+                    ImageLoader.getInstance().addImageTask(task, this);
+                    if (Config.DEBUG){
+                        Log.d(TAG, "file cache img exist, load local file cache : " + imgFilePath);
+                    }
+                } else {
+                    //load image from the internet
+                    DownloadImageTask task = new DownloadImageTask(mImageUrl, ImageLoader.getInstance().getRequestQueue(getContext()), mFileCacheManager);
+                    ImageLoader.getInstance().addImageTask(task, this);
+                    if (Config.DEBUG){
+                        Log.d(TAG, "file cache img not exist, download img from net : " + mImageUrl);
+                    }
+                }
+            }
         }
     }
 

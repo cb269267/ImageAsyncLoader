@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Created by tao.chen1 on 2015/1/15.
  */
-public abstract class ImageTask implements IImageTask{
+public abstract class ImageTask implements IImageTask {
 
     private static final String TAG = "ImageTask";
     private static final Boolean DEBUG = Config.DEBUG;
@@ -54,6 +54,11 @@ public abstract class ImageTask implements IImageTask{
         boolean isLoaded = doLoadFromCache();
         if (!isLoaded) {
             doInBackground();
+        } else {
+            if (DEBUG) {
+                Log.e(TAG, "bingo cache:" + getKey());
+            }
+            onFinished();
         }
         long costTime = System.currentTimeMillis() - startTime;
         if (DEBUG) {
@@ -65,10 +70,14 @@ public abstract class ImageTask implements IImageTask{
 
     /**
      * try get image from cache
+     *
      * @return true if bingo
      */
     protected boolean doLoadFromCache() {
         String key = getKey();
+        if (DEBUG) {
+            Log.e(TAG, String.format("KEY=%s, cache size=%d", key, ImageCache.getsInstance().mMemoryCache.size()));
+        }
         if (!TextUtils.isEmpty(key)) {
             result = ImageCache.getsInstance().get(key);
         }
@@ -77,6 +86,9 @@ public abstract class ImageTask implements IImageTask{
 
     @Override
     public void onFinished() {
+        //先加入cache中
+        ImageCache.getsInstance().set(getKey(), result);
+        //再通知界面刷新
         if (mUIHandler != null) {
             Message msg = mUIHandler.obtainMessage(WHAT_TASK_DONE);
             msg.obj = this;
@@ -86,7 +98,7 @@ public abstract class ImageTask implements IImageTask{
 
     public void doFinished() {
         if (mImageViewList != null && mImageViewList.size() > 0) {
-            for(CustomImageView view : mImageViewList) {
+            for (CustomImageView view : mImageViewList) {
                 view.setImageDrawable(result);
             }
         }
@@ -104,7 +116,8 @@ public abstract class ImageTask implements IImageTask{
     }
 
     public static final int WHAT_TASK_DONE = 1;
-    private static class UIHandler extends Handler{
+
+    private static class UIHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             ImageTask task = (ImageTask) msg.obj;
@@ -120,6 +133,7 @@ public abstract class ImageTask implements IImageTask{
 
     public interface TaskFinishedListener {
         public void onFinished(String key);
+
         public void onInterrupted(String key);
     }
 

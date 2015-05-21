@@ -6,7 +6,9 @@ import android.text.TextUtils;
 import com.ct.image.imageasyncloader.other.Utils;
 
 /**
- * Created by tao.chen1 on 2015/1/15.
+ * LoadImageTask
+ *
+ * @author tao.chen1
  */
 public class LoadImageTask extends ImageTask {
     private String mFilePath = "";
@@ -17,6 +19,7 @@ public class LoadImageTask extends ImageTask {
 
     /**
      * when file path is empty ,return can be null
+     *
      * @return
      */
     @Override
@@ -35,6 +38,7 @@ public class LoadImageTask extends ImageTask {
             Context context = mImageViewList.get(0).getContext();
             if (context != null) {
                 result = Utils.readBitmapDrawable(context, mFilePath);
+
                 onFinished();
             } else {
                 onError();

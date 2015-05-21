@@ -3,11 +3,18 @@ package com.ct.image.imageasyncloader.other;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
+
+import com.elong.tourpal.application.Env;
 
 /**
- * Created by tao.chen1 on 2015/1/15.
+ * RecyclableBitmapDrawable
+ *
+ * @author tao.chen1
  */
 public class RecyclableBitmapDrawable extends BitmapDrawable {
+
+    private static final String TAG = "RecycleBitmapDrawable";
 
     private int mRefCacheCount = 0;
     private int mRefDisplayCount = 0;
@@ -48,6 +55,9 @@ public class RecyclableBitmapDrawable extends BitmapDrawable {
     private void checkState() {
         if (mRefCacheCount <= 0 && mRefDisplayCount <= 0 && mHasBeenDisplayed && isBitmapValid()) {
             getBitmap().recycle();
+            if (Env.DEBUG) {
+                Log.e(TAG, "recycle : " + toString());
+            }
         }
     }
 

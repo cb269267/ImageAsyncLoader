@@ -10,11 +10,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by tao.chen1 on 2015/1/15.
+ * ImageTaskExecutor
+ *
+ * @author tao.chen1
  */
 public class ImageTaskExecutor implements Executor {
     private static final TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
     private static final int KEEP_ALIVE_TIME = 1;
+    private static final int MAX_POOL_SIZE = 4;
 
     private static int sNumOfCpuCores = Runtime.getRuntime().availableProcessors();
     private static volatile ImageTaskExecutor sInstance = null;
@@ -22,10 +25,10 @@ public class ImageTaskExecutor implements Executor {
     private final ThreadPoolExecutor mThreadPool;
     private final LinkedBlockingStack<Runnable> mTaskWorkQueue;
 
-    public static ImageTaskExecutor getInstance(){
+    public static ImageTaskExecutor getInstance() {
         if (sInstance == null) {
             synchronized (ImageTaskExecutor.class) {
-                if(sInstance == null) {
+                if (sInstance == null) {
                     sInstance = new ImageTaskExecutor();
                 }
             }
@@ -35,7 +38,8 @@ public class ImageTaskExecutor implements Executor {
 
     private ImageTaskExecutor() {
         mTaskWorkQueue = new LinkedBlockingStack<>();
-        mThreadPool = new ThreadPoolExecutor(sNumOfCpuCores, sNumOfCpuCores, KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, mTaskWorkQueue, new DefaultThreadFactory());
+        int poolSize = Math.min(sNumOfCpuCores, MAX_POOL_SIZE);
+        mThreadPool = new ThreadPoolExecutor(poolSize, poolSize, KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, mTaskWorkQueue, new DefaultThreadFactory());
         if (Build.VERSION.SDK_INT >= 10) {
             mThreadPool.allowCoreThreadTimeOut(true);
         }

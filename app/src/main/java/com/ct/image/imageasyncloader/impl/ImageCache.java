@@ -4,27 +4,33 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
-import com.ct.image.imageasyncloader.i.IImageCache;
-import com.ct.image.imageasyncloader.other.Config;
-import com.ct.image.imageasyncloader.other.ImageUtils;
-import com.ct.image.imageasyncloader.other.RecyclableBitmapDrawable;
+import com.elong.tourpal.imageasyncloader.i.IImageCache;
+import com.elong.tourpal.imageasyncloader.other.Config;
+import com.elong.tourpal.imageasyncloader.other.ImageUtils;
+import com.elong.tourpal.imageasyncloader.other.RecyclableBitmapDrawable;
 
+/**
+ * ImageCache
+ *
+ * @author tao.chen1
+ */
 public class ImageCache implements IImageCache {
     private static final String TAG = "ImageCache";
     private static final boolean DEBUG = Config.DEBUG;
 
-    private LruCache<String, BitmapDrawable> mMemoryCache;
+    public LruCache<String, BitmapDrawable> mMemoryCache;
     private static volatile ImageCache sInstance = null;
 
     /**
      * custom image cache with specific memory size
+     *
      * @param size image cache memory size
      * @return ImageCache
      */
-    public static ImageCache getInstance(int size){
+    public static ImageCache getInstance(int size) {
         if (sInstance == null) {
             synchronized (ImageCache.class) {
-                if(sInstance == null) {
+                if (sInstance == null) {
                     sInstance = new ImageCache(size);
                 }
             }
@@ -34,9 +40,10 @@ public class ImageCache implements IImageCache {
 
     /**
      * default cache size: 20% max memory
+     *
      * @return ImageCache
      */
-    public static ImageCache getsInstance(){
+    public static ImageCache getsInstance() {
         int size = Math.round(0.2f * Runtime.getRuntime().maxMemory() / 1024);
         if (DEBUG) {
             Log.e(TAG, Runtime.getRuntime().maxMemory() / 1024 / 1024 + "");
@@ -45,7 +52,6 @@ public class ImageCache implements IImageCache {
     }
 
     /**
-     *
      * @param cacheSize kb
      */
     private ImageCache(int cacheSize) {
@@ -76,17 +82,18 @@ public class ImageCache implements IImageCache {
             }
         };
 
-        mMemoryCache = new LruCache<String, BitmapDrawable>(cacheSize) {
-            @Override
-            protected void entryRemoved(boolean evicted, String key, BitmapDrawable oldValue, BitmapDrawable newValue) {
-                super.entryRemoved(evicted, key, oldValue, newValue);
-            }
-
-            @Override
-            protected int sizeOf(String key, BitmapDrawable value) {
-                return super.sizeOf(key, value);
-            }
-        };
+//      冗余代码，删除
+//        mMemoryCache = new LruCache<String, BitmapDrawable>(cacheSize) {
+//            @Override
+//            protected void entryRemoved(boolean evicted, String key, BitmapDrawable oldValue, BitmapDrawable newValue) {
+//                super.entryRemoved(evicted, key, oldValue, newValue);
+//            }
+//
+//            @Override
+//            protected int sizeOf(String key, BitmapDrawable value) {
+//                return super.sizeOf(key, value);
+//            }
+//        };
     }
 
     @Override

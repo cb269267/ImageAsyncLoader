@@ -1,12 +1,13 @@
 package com.ct.image.imageasyncloader.other;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 
 /**
- * Created by tao.chen1 on 2015/1/15.
+ * ImageUtils
+ *
+ * @author tao.chen1
  */
 public class ImageUtils {
 
