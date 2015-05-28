@@ -106,6 +106,8 @@ public class DemoActivity extends ActionBarActivity {
             String key = mListData.get(position);
             if (key.startsWith("http")) {
                 holder.imageView.setImageUrl(key);
+                //指定down下来图片的 存储路径
+                holder.imageView.setFileCacheManager(new CustomFileCacheManager(CustomFileCacheManager.TYPE_1));
             } else {
                 holder.imageView.setImagePath(key);
             }
