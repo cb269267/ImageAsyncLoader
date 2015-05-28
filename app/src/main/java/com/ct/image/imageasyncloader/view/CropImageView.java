@@ -16,15 +16,15 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.elong.tourpal.application.Env;
-import com.elong.tourpal.application.TourPalApplication;
+import com.ct.image.imageasyncloader.other.Config;
+import com.ct.image.imageasyncloader.other.Utils;
 
 /**
  * Created by zhitao.xu on 2015/4/27.
  */
 public class CropImageView extends CustomImageView implements ScaleGestureDetector.OnScaleGestureListener,
         View.OnTouchListener, ViewTreeObserver.OnGlobalLayoutListener {
-    private static final boolean DEBUG = Env.DEBUG;
+    private static final boolean DEBUG = Config.DEBUG;
     private static final String TAG = CropImageView.class.getSimpleName();
     private static final float STEP = 2.0f;
     public float SCALE_MAX = 4.0f;
@@ -538,9 +538,9 @@ public class CropImageView extends CustomImageView implements ScaleGestureDetect
     }
 
     public void setDrawable(String mDrawable, int cropWidth, int cropHeight) {
-        this.mCropWidth = dipTopx(TourPalApplication.getAppContext(), cropWidth);
-        this.mCropHeight = dipTopx(TourPalApplication.getAppContext(), cropHeight);
-        if (com.elong.tourpal.utils.Utils.isUrl(mDrawable)) {
+        this.mCropWidth = dipTopx(getContext(), cropWidth);
+        this.mCropHeight = dipTopx(getContext(), cropHeight);
+        if (Utils.isUrl(mDrawable)) {
             setImageUrl(mDrawable);
         } else {
             setImagePath(mDrawable);

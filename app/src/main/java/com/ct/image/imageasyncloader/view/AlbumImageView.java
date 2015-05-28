@@ -12,14 +12,14 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.elong.tourpal.application.Env;
+import com.ct.image.imageasyncloader.other.Config;
 
 /**
  * Created by zhitao.xu on 2015/4/27.
  */
 public class AlbumImageView extends CustomImageView implements ScaleGestureDetector.OnScaleGestureListener,
         View.OnTouchListener, ViewTreeObserver.OnGlobalLayoutListener {
-    private static final boolean DEBUG = Env.DEBUG;
+    private static final boolean DEBUG = Config.DEBUG;
     private static final String TAG = AlbumImageView.class.getSimpleName();
     private static final float STEP = 2.0f;
     public float SCALE_MAX = 4.0f;

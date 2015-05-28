@@ -7,8 +7,8 @@ import android.os.StatFs;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.elong.tourpal.application.Env;
-import com.elong.tourpal.utils.Utils;
+import com.ct.image.imageasyncloader.other.Config;
+import com.ct.image.imageasyncloader.other.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,14 +56,14 @@ public abstract class IFileCacheManager {
 
     public void cacheBitmap(Bitmap bm, String url) {
         if (bm == null) {
-            if (Env.DEBUG) {
+            if (Config.DEBUG) {
                 Log.e(TAG, " trying to save null bitmap");
             }
             return;
         }
         //判断sdcard上的空间
         if (FREE_SD_SPACE_NEEDED_TO_CACHE > freeSpaceOnSd()) {
-            if (Env.DEBUG) {
+            if (Config.DEBUG) {
                 Log.e(TAG, "Low free space on sd, do not cache");
             }
             return;
@@ -78,15 +78,15 @@ public abstract class IFileCacheManager {
                 bm.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                 outStream.flush();
                 outStream.close();
-                if (Env.DEBUG) {
+                if (Config.DEBUG) {
                     Log.i(TAG, "Image saved to sd");
                 }
             } catch (FileNotFoundException e) {
-                if (Env.DEBUG) {
+                if (Config.DEBUG) {
                     Log.e(TAG, "e:", e);
                 }
             } catch (IOException e) {
-                if (Env.DEBUG) {
+                if (Config.DEBUG) {
                     Log.e(TAG, "e:", e);
                 }
             }
@@ -127,7 +127,7 @@ public abstract class IFileCacheManager {
             int removeFactor = (int) ((0.4 * files.length) + 1);
             Arrays.sort(files, new FileLastModifSort());
 
-            if (Env.DEBUG) {
+            if (Config.DEBUG) {
                 Log.i(TAG, "Clear some expired cache files ");
             }
 

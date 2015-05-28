@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
-import com.elong.tourpal.application.Env;
-
 /**
  * RecyclableBitmapDrawable
  *
@@ -55,7 +53,7 @@ public class RecyclableBitmapDrawable extends BitmapDrawable {
     private void checkState() {
         if (mRefCacheCount <= 0 && mRefDisplayCount <= 0 && mHasBeenDisplayed && isBitmapValid()) {
             getBitmap().recycle();
-            if (Env.DEBUG) {
+            if (Config.DEBUG) {
                 Log.e(TAG, "recycle : " + toString());
             }
         }

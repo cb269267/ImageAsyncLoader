@@ -4,10 +4,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
-import com.elong.tourpal.imageasyncloader.i.IImageCache;
-import com.elong.tourpal.imageasyncloader.other.Config;
-import com.elong.tourpal.imageasyncloader.other.ImageUtils;
-import com.elong.tourpal.imageasyncloader.other.RecyclableBitmapDrawable;
+import com.ct.image.imageasyncloader.i.IImageCache;
+import com.ct.image.imageasyncloader.other.Config;
+import com.ct.image.imageasyncloader.other.ImageUtils;
+import com.ct.image.imageasyncloader.other.RecyclableBitmapDrawable;
 
 /**
  * ImageCache
