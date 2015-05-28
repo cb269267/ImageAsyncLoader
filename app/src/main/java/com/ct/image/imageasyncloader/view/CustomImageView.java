@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.ct.image.imageasyncloader.core.ImageLoader;
 import com.ct.image.imageasyncloader.i.IFileCacheManager;
-import com.ct.image.imageasyncloader.impl.CustomFileCacheManager;
+import com.ct.image.imageasyncloader.impl.DefaultFileCacheManager;
 import com.ct.image.imageasyncloader.impl.DownloadImageTask;
 import com.ct.image.imageasyncloader.impl.ImageTask;
 import com.ct.image.imageasyncloader.impl.LoadImageTask;
@@ -58,18 +58,11 @@ public class CustomImageView extends ImageView {
     }
 
     private void init(){
-        mFileCacheManager = new CustomFileCacheManager(CustomFileCacheManager.TYPE_POSTS_CONTENT);
+        mFileCacheManager = new DefaultFileCacheManager();
     }
 
-    /**
-     * @param type TYPE in {@link com.ct.image.imageasyncloader.impl.CustomFileCacheManager}
-     */
-    public void setFileCacheManagerType(int type){
-        if (mFileCacheManager != null) {
-            mFileCacheManager = new CustomFileCacheManager(type);
-        } else {
-            ((CustomFileCacheManager) mFileCacheManager).setType(type);
-        }
+    public void setFileCacheManager(IFileCacheManager fileCacheManager) {
+        mFileCacheManager = fileCacheManager;
     }
 
     @Override
